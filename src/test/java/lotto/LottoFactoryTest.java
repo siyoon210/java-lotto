@@ -21,6 +21,6 @@ public class LottoFactoryTest {
     void buyLottoTest() {
         int amount = 10000;
         List<Lotto> lottos =  lottoFactory.buyLotto(amount);
-        assertThat(lottos.size()).isEqualsTo(10);
+        assertThat(lottos.size()).isEqualTo(10);
     }
 }
