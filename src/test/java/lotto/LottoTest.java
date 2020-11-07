@@ -3,16 +3,27 @@ package lotto;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import java.util.Arrays;
+
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
+import static org.junit.jupiter.api.Assertions.assertAll;
 
 public class LottoTest {
     @Test
-    @DisplayName("Lotto는 지정된 범위내의 서로 다른 숫자를 size만큼 가진다.")
-    void create() {
-        int maxNum = 45;
-        int size = 6;
+    @DisplayName("로또 생성시 number size가 유효하지 않으면 throw IllegalStateException")
+    void createTest_invalidNumberSize() {
+        assertAll(
+                () -> assertThatExceptionOfType(IllegalStateException.class)
+                        .isThrownBy(() -> new Lotto(Arrays.asList(1, 2, 3, 4, 5))),
+                () -> assertThatExceptionOfType(IllegalStateException.class)
+                        .isThrownBy(() -> new Lotto(Arrays.asList(1, 2, 3, 4, 5, 6, 7)))
+        );
+    }
 
-        Lotto lotto = new Lotto(maxNum, size);
-        assertThat(lotto.numbersSize()).isEqualTo(size);
+    @Test
+    @DisplayName("로또 숫자가 중복되어 number size가 유효하지 않으면 throw IllegalStateException")
+    void createTest_duplicatedNumbers() {
+        assertThatExceptionOfType(IllegalStateException.class)
+                .isThrownBy(() -> new Lotto(Arrays.asList(1, 1, 1, 1, 1, 1)));
     }
 }
