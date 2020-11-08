@@ -24,4 +24,11 @@ public class Lotto {
     public int numbersSize() {
         return numbers.size();
     }
+
+    @Override
+    public String toString() {
+        return "Lotto{" +
+                "numbers=" + numbers +
+                '}';
+    }
 }
