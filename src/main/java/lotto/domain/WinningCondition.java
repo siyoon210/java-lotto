@@ -1,24 +1,14 @@
 package lotto.domain;
 
-public class WinningCondition {
+class WinningCondition {
     private final int matchedCount;
-    private final boolean bonusNumMatched;
 
-    private WinningCondition(int matchedCount, boolean bonusNumMatched) {
+    private WinningCondition(int matchedCount) {
         this.matchedCount = matchedCount;
-        this.bonusNumMatched = bonusNumMatched;
     }
 
-    public static WinningCondition of(int matchedCount, boolean bonusNumMatched) {
-        return new WinningCondition(matchedCount, bonusNumMatched);
-    }
-
-    public int getMatchedCount() {
-        return matchedCount;
-    }
-
-    public boolean isBonusNumMatched() {
-        return bonusNumMatched;
+    static Builder builder() {
+        return new Builder();
     }
 
     @Override
@@ -28,14 +18,26 @@ public class WinningCondition {
 
         WinningCondition that = (WinningCondition) o;
 
-        if (matchedCount != that.matchedCount) return false;
-        return bonusNumMatched == that.bonusNumMatched;
+        return matchedCount == that.matchedCount;
     }
 
     @Override
     public int hashCode() {
-        int result = matchedCount;
-        result = 31 * result + (bonusNumMatched ? 1 : 0);
-        return result;
+        return matchedCount;
+    }
+
+    public static class Builder{
+        private int matchedCount;
+
+        private Builder(){}
+
+        public Builder matchedCount(int matchedCount) {
+            this.matchedCount = matchedCount;
+            return this;
+        }
+
+        public WinningCondition build() {
+            return new WinningCondition(this.matchedCount);
+        }
     }
 }
