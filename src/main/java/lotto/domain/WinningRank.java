@@ -1,18 +1,16 @@
 package lotto.domain;
 
-import lotto.dto.WinningNumber;
-
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 public enum WinningRank {
-    NONE(0, null),
-    MATCHES_THREE(5_000, WinningCondition.of(3, false)),
-    MATCHES_FOUR(50_000, WinningCondition.of(4, false)),
-    MATCHES_FIVE(1_500_000, WinningCondition.of(5, false)),
-    MATCHES_FIVE_AND_BONUS_NUMBER(30_000_000, WinningCondition.of(5, true)),
-    MATCHES_SIX(2_000_000_000, WinningCondition.of(6, false));
+    NONE("꽝", 0, null),
+    MATCHES_THREE("3개 일치", 5_000, WinningCondition.builder().matchedCount(3).build()),
+    MATCHES_FOUR("4개 일치", 50_000, WinningCondition.builder().matchedCount(4).build()),
+    MATCHES_FIVE("5개 일치", 1_500_000, WinningCondition.builder().matchedCount(5).build()),
+    MATCHES_SIX("6개 일치", 2_000_000_000, WinningCondition.builder().matchedCount(6).build());
 
     private static final Map<WinningCondition, WinningRank> RANK_BY_CONDITION;
 
@@ -23,25 +21,28 @@ public enum WinningRank {
         }
     }
 
+    private final String description;
     private final int winningAmount;
     private final WinningCondition winningCondition;
 
-    WinningRank(int winningAmount, WinningCondition winningCondition) {
+    WinningRank(String description, int winningAmount, WinningCondition winningCondition) {
+        this.description = description;
         this.winningAmount = winningAmount;
         this.winningCondition = winningCondition;
     }
 
-    public static WinningRank getWinningRank(WinningNumber winningNumber, Lotto boughtLotto) {
-        WinningCondition winningCondition = getWinningConditionOf(winningNumber, boughtLotto);
+    public static WinningRank getWinningRank(Collection<Integer> winningNumbers, Lotto boughtLotto) {
+        WinningCondition winningCondition = getWinningConditionOf(winningNumbers, boughtLotto);
         WinningRank winningRank = RANK_BY_CONDITION.get(winningCondition);
         return winningRank != null ? winningRank : NONE;
     }
 
-    private static WinningCondition getWinningConditionOf(WinningNumber winningNumber, Lotto boughtLotto) {
-        int matchedCount = winningNumber.getMatchedCountCompareTo(boughtLotto);
-        boolean bonusNumMatched = winningNumber.isBonusNumMatchedTo(boughtLotto);
+    private static WinningCondition getWinningConditionOf(Collection<Integer> winningNumbers, Lotto boughtLotto) {
+        int matchedCount = boughtLotto.getMatchedCountCompareTo(winningNumbers);
 
-        return WinningCondition.of(matchedCount, bonusNumMatched);
+        return WinningCondition.builder()
+                .matchedCount(matchedCount)
+                .build();
     }
 
     public static int getTotalWinningAmount(List<WinningRank> winningRanks) {
@@ -50,11 +51,11 @@ public enum WinningRank {
                 .sum();
     }
 
-    public int getWinningAmount() {
-        return winningAmount;
+    public String getDescription() {
+        return description;
     }
 
-    public WinningCondition getWinningCondition() {
-        return winningCondition;
+    public int getWinningAmount() {
+        return winningAmount;
     }
 }
