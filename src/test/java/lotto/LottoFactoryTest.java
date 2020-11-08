@@ -16,15 +16,15 @@ public class LottoFactoryTest {
     }
 
     @Test
-    @DisplayName("입력된 금액으로 구입할 수 있는 최대 갯수의 로또를 반환한다.")
+    @DisplayName("주어진 금액으로 구매 할 수 있는 만큼 로또를 구입한다.")
     void buyLottoTest() {
         assertAll(
-                () -> assertThat(lottoFactory.buyLotto(-1).size()).isEqualTo(0),
-                () -> assertThat(lottoFactory.buyLotto(0).size()).isEqualTo(0),
-                () -> assertThat(lottoFactory.buyLotto(999).size()).isEqualTo(0),
-                () -> assertThat(lottoFactory.buyLotto(1000).size()).isEqualTo(1),
-                () -> assertThat(lottoFactory.buyLotto(10000).size()).isEqualTo(10),
-                () -> assertThat(lottoFactory.buyLotto(10500).size()).isEqualTo(10)
+                () -> assertThat(lottoFactory.buyLottos(-1).size()).isEqualTo(0),
+                () -> assertThat(lottoFactory.buyLottos(0).size()).isEqualTo(0),
+                () -> assertThat(lottoFactory.buyLottos(999).size()).isEqualTo(0),
+                () -> assertThat(lottoFactory.buyLottos(1000).size()).isEqualTo(1),
+                () -> assertThat(lottoFactory.buyLottos(10_000).size()).isEqualTo(10),
+                () -> assertThat(lottoFactory.buyLottos(10_100).size()).isEqualTo(10)
         );
     }
 }
