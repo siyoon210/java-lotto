@@ -1,5 +1,8 @@
 package lotto;
 
+import lotto.domain.Lotto;
+import lotto.domain.WinningRank;
+import lotto.dto.WinningStatistic;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -25,7 +28,7 @@ public class WinningCheckerTest {
     @ParameterizedTest
     @MethodSource("boughtLottos")
     @DisplayName("구매한 로또들과 지난 주 당첨 번호로, 당첨 횟수와 수익이 얼마나 되는지 계산한다.")
-    void winningAndStatisticTest(List<Lotto> boughtLottos, double expectedEarningRate, int expectedCountOfMatchesSix) {
+    void winningAndStatisticTest(List<Lotto> boughtLottos, String expectedEarningRate, int expectedCountOfMatchesSix) {
         List<Integer> winningNumbers = new ArrayList<>(Arrays.asList(1, 2, 3, 4, 5, 6));
 
         WinningStatistic winningStatistic = winningChecker.getResult(winningNumbers, boughtLottos);
@@ -38,8 +41,8 @@ public class WinningCheckerTest {
 
     private static Stream<Arguments> boughtLottos() {
         return Stream.of(
-                Arguments.of(lottosEarningZero(), 0, 0),
-                Arguments.of(lottosEarningMax(), WinningRank.MATCHES_SIX.winningAmount / LottoFactory.PRICE_OF_ONE_LOTTO, 1)
+                Arguments.of(lottosEarningZero(), "0", 0),
+                Arguments.of(lottosEarningMax(), String.valueOf(WinningRank.MATCHES_SIX.getWinningAmount() / LottoFactory.PRICE_OF_ONE_LOTTO), 1)
         );
     }
 

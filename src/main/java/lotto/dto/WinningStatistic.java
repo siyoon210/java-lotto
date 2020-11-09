@@ -1,17 +1,19 @@
-package lotto;
+package lotto.dto;
+
+import lotto.domain.WinningRank;
 
 import java.util.Map;
 
 public class WinningStatistic {
     private final Map<WinningRank, Integer> countOfWinningRanks;
-    private final double earningsRate;
+    private final String earningsRate;
 
-    public WinningStatistic(Map<WinningRank, Integer> countOfWinningRanks, int earningsRate) {
+    public WinningStatistic(Map<WinningRank, Integer> countOfWinningRanks, String earningsRate) {
         this.countOfWinningRanks = countOfWinningRanks;
         this.earningsRate = earningsRate;
     }
 
-    public double getEarningsRate() {
+    public String getEarningsRate() {
         return earningsRate;
     }
 
