@@ -48,4 +48,9 @@ public class MockInvalidAmountView implements View {
     public void printWinningStatistic(WinningStatistic winningStatistic) {
 
     }
+
+    @Override
+    public int getBonusNumber() {
+        return 0;
+    }
 }
