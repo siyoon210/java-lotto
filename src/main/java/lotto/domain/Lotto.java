@@ -1,6 +1,6 @@
 package lotto.domain;
 
-import lotto.dto.WinningNumber;
+import lotto.exception.IllegalLottoNumberSizeException;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -30,30 +30,24 @@ public class Lotto {
 
     private Set<LottoNumber> getLottoNumbersFrom(Collection<Integer> numbers) {
         return numbers.stream()
-                .map(LottoNumber::from)
+                .map(LottoNumber::valueOf)
                 .collect(Collectors.toCollection(TreeSet::new));
     }
 
     private void validateNumbersSize() {
         if (numbers.size() != VALID_NUMBERS_SIZE) {
-            throw new IllegalStateException(INVALID_NUMBERS_SIZE_ERR_MSG);
+            throw new IllegalLottoNumberSizeException(INVALID_NUMBERS_SIZE_ERR_MSG);
         }
     }
 
-    public int getMatchedCountCompareTo(WinningNumber winningNumber) {
-        Lotto winningLotto = winningNumber.getWinningLotto();
+    public int getMatchedCountCompareTo(Lotto lotto) {
         return (int) numbers.stream()
-                .filter(winningLotto.numbers::contains)
+                .filter(lotto.numbers::contains)
                 .count();
     }
 
     public Set<LottoNumber> getNumbers() {
         return numbers;
-    }
-
-    public boolean contains(WinningNumber winningNumber) {
-        LottoNumber bonusNumber = winningNumber.getBonusNumber();
-        return contains(bonusNumber);
     }
 
     public boolean contains(LottoNumber lottoNumber) {

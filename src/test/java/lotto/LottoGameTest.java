@@ -1,7 +1,8 @@
 package lotto;
 
+import lotto.exception.IllegalInputAmountException;
 import lotto.mock.MockInvalidAmountView;
-import lotto.service.LottoServiceImpl;
+import lotto.service.LottoService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -12,12 +13,12 @@ public class LottoGameTest {
 
     @BeforeEach
     void init() {
-        lottoGame = new LottoGame(new MockInvalidAmountView(), new LottoServiceImpl());
+        lottoGame = new LottoGame(new MockInvalidAmountView(), new LottoService());
     }
 
     @Test
     void test() {
-        assertThatExceptionOfType(IllegalArgumentException.class)
+        assertThatExceptionOfType(IllegalInputAmountException.class)
                 .isThrownBy(() -> lottoGame.start())
                 .withMessage(LottoGame.INVALID_AMOUNT_ERR_MSG);
     }
